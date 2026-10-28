@@ -63,7 +63,10 @@ def browse():
         root = app.config['LOCAL_ROOT']
     else:
         root = app.config['NAS_ROOT']
-    
+
+    if not is_safe_path(root, subpath):
+        return jsonify({'error': 'Access denied'}), 403
+
     full_path = os.path.join(root, subpath)
     
     if not os.path.exists(full_path) or not os.path.isdir(full_path):
